@@ -19,6 +19,8 @@ namespace DiscontedDAL
                 ["pubsConnectionString"].ToString());
             SqlDataAdapter da= new SqlDataAdapter
                 ("select * from pub_info", cn);
+            //for update or delte
+            da.MissingSchemaAction = MissingSchemaAction.AddWithKey;
             DataSet ds = new DataSet();
             da.Fill(ds,"pub_info");//here we are disconnected
             DataRow drow = null;//doesn't have constructor
@@ -40,10 +42,30 @@ namespace DiscontedDAL
             }
             return status;
         }
-        //public bool UpdateData(JobInfo info)
-        //{
+        public bool UpdateData(JobInfo info)
+        {
 
-        //}
+            SqlConnection cn = new SqlConnection
+                (ConfigurationManager.ConnectionStrings
+                ["pubsConnectionString"].ToString());
+            SqlDataAdapter da = new SqlDataAdapter
+                ("select * from pub_info", cn);
+            //for update or delte
+            da.MissingSchemaAction = MissingSchemaAction.AddWithKey;
+            DataSet ds = new DataSet();
+            da.Fill(ds, "pub_info");//here we are disconnected
+            DataRow drow=ds.Tables[0].Rows.Find(info.JobId);
+            drow[2] = info.PrInfo;
+            SqlCommandBuilder bldr = new SqlCommandBuilder(da);
+            int i = da.Update(ds.Tables[0]);
+            bool status = false;
+            if (i > 0)
+            {
+                status = true;
+            }
+            return status;
+
+        }
         //public bool DeleteData(string id)
         //{
 

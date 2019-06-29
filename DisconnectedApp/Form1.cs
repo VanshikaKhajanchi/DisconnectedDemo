@@ -46,5 +46,18 @@ namespace DisconnectedApp
             dal.InsertData(info);
 
         }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+
+            JobInfo info = new JobInfo();
+            info.JobId = "9999";
+            info.PrInfo = "This is changed text";
+            info.Logo = null;
+         PrInfoDal dal = new PrInfoDal();
+            bool status=dal.UpdateData(info);
+          
+            MessageBox.Show(status.ToString());
+        }
     }
 }
